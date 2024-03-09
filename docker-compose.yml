@@ -3,10 +3,21 @@ version: '3.9'
 services:
   develop:
     build:
-      context: ./sd-scripts/
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: ./Dockerfile
+    ports:
+      - 6006
     volumes:
-      - ./sd-scripts:/app
-      - ./data:/data
+      - ./:/app
+      - /d/obara/stable-diffusion-xl/models:/models
+      - /d/obara/myPictures/train:/train
     command: bash /bin/bash
     tty: true
+    shm_size: '2gb'
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
